@@ -1,0 +1,72 @@
+<!doctype html>
+<!-- The app icon, drawn as SVG and exported at every size Android and Google Play want.
+     tools/android/make-icons.sh opens this page headlessly and reads the PNGs out of it.
+     Open it in a browser to look at the icon. -->
+<meta charset="utf-8">
+<title>Meridian icon</title>
+<style>
+  body { margin: 0; padding: 24px; background: #333; color: #ddd; font: 14px sans-serif; display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-end; }
+  figure { margin: 0; text-align: center; } canvas { display: block; margin-bottom: 6px; background: repeating-conic-gradient(#555 0 25%, #666 0 50%) 0 0 / 16px 16px; }
+  pre { display: none; }
+</style>
+<body>
+<script>
+// One drawing in a 108-unit box, the size of an Android adaptive icon layer. Android
+// only promises to show the middle 66 units (a circle of radius 33), so the mark
+// stays inside that: a ring for the day, and the meridian line with the noon sun on it.
+const DEFS = `
+  <defs>
+    <radialGradient id="paper" cx="50%" cy="38%" r="80%">
+      <stop offset="0" stop-color="#17897b"/><stop offset="1" stop-color="#0b544b"/>
+    </radialGradient>
+  </defs>`;
+const BACKGROUND = `<rect width="108" height="108" fill="#0f6e63"/><rect width="108" height="108" fill="url(#paper)"/>`;
+const FOREGROUND = `
+  <circle cx="54" cy="56" r="19" fill="none" stroke="#f4f1ea" stroke-width="5"/>
+  <path d="M54 33 V80" stroke="#f2b84b" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="54" cy="31" r="6.2" fill="#f2b84b"/>
+  <circle cx="54" cy="31" r="6.2" fill="none" stroke="#0f6e63" stroke-width="1.6"/>`;
+const svg = (body) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 108 108">${DEFS}${body}</svg>`;
+const LAYERS = {
+  foreground: svg(FOREGROUND),
+  // A launcher icon shows roughly the middle two thirds of the layers: crop to match.
+  full: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="15 15 78 78">${DEFS}${BACKGROUND}${FOREGROUND}</svg>`,
+  round: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="15 15 78 78">${DEFS}<clipPath id="c"><circle cx="54" cy="54" r="39"/></clipPath><g clip-path="url(#c)">${BACKGROUND}${FOREGROUND}</g></svg>`,
+};
+const DENSITIES = { mdpi: 1, hdpi: 1.5, xhdpi: 2, xxhdpi: 3, xxxhdpi: 4 };
+const jobs = [{ file: 'store/android/icon-512.png', layer: 'full', size: 512 }];
+for (const [d, k] of Object.entries(DENSITIES)) {
+  const res = `android/app/src/main/res/mipmap-${d}`;
+  jobs.push({ file: `${res}/ic_launcher.png`, layer: 'full', size: 48 * k });
+  jobs.push({ file: `${res}/ic_launcher_round.png`, layer: 'round', size: 48 * k });
+  jobs.push({ file: `${res}/ic_launcher_foreground.png`, layer: 'foreground', size: 108 * k });
+}
+const load = (markup) => new Promise((resolve, reject) => {
+  const img = new Image();
+  img.onload = () => resolve(img);
+  img.onerror = reject;
+  img.src = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(markup)}`;
+});
+(async () => {
+  const out = {};
+  for (const job of jobs) {
+    const img = await load(LAYERS[job.layer]);
+    const c = document.createElement('canvas');
+    c.width = c.height = job.size;
+    const g = c.getContext('2d');
+    g.imageSmoothingQuality = 'high';
+    g.drawImage(img, 0, 0, job.size, job.size);
+    out[job.file] = c.toDataURL('image/png');
+    if (job.size >= 192) {
+      const fig = document.createElement('figure');
+      c.style.width = c.style.height = `${Math.min(job.size, 256)}px`;
+      fig.append(c, `${job.layer} ${job.size}`);
+      document.body.append(fig);
+    }
+  }
+  const pre = document.createElement('pre');
+  pre.id = 'icons';
+  pre.textContent = JSON.stringify(out);
+  document.body.append(pre);
+})();
+</script>

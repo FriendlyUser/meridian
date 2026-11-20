@@ -1,0 +1,7 @@
+# Shell scripts and the Gradle wrapper run on Linux (WSL, GitHub Actions): keep their
+# line endings as LF even when the files are edited on Windows.
+*.sh text eol=lf
+gradlew text eol=lf
+*.bat text eol=crlf
+*.png binary
+*.jar binary
