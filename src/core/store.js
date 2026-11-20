@@ -69,8 +69,10 @@ function normalize(raw) {
 
 const listeners = new Set();
 let failed = false;
+let volatile = false;
 
 function write() {
+  if (volatile) return; // a demo: nothing it shows or changes is kept
   try {
     localStorage.setItem(KEY, JSON.stringify(store.data));
     if (failed) { failed = false; emit('storage-ok'); }
@@ -102,6 +104,16 @@ export const store = {
     }
     this.data = normalize(raw);
     return raw !== null;
+  },
+
+  /**
+   * Start from a clean, made-up workspace that is never saved, leaving whatever is
+   * really stored on this device untouched (index.html?demo, used for store pictures).
+   */
+  startDemo() {
+    volatile = true;
+    this.data = blank();
+    this.data.seeded = true;
   },
 
   /** Call after changing `data`. `source` names who did it. */

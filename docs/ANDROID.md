@@ -12,7 +12,8 @@ It is set up the way Afterlight is, and released with the same signing kit:
 | `android/`, `capacitor.config.json` | The native project. Edited by hand rarely; `npx cap sync android` refreshes the web files in it |
 | `.github/workflows/android.yml` | Builds the unsigned bundle and a debug APK on GitHub (copied unchanged from the kit's template) |
 | `tools/android/release.sh` | Starts that build, downloads it and signs it (the kit's template) |
-| `tools/android/make-icons.sh`, `tools/android/art/` | Redraws the launcher icon at every size |
+| `tools/android/make-icons.sh`, `tools/android/store-shots.sh`, `tools/android/art/` | Redraw the launcher icon; retake the store pictures |
+| `store/android/` | The Play listing: text, icon, feature graphic, screenshots |
 | `/home/david/claude_space/android-release/` | The signing kit, shared by every app (not in this repository) |
 | `~/.android-release/` | **The upload key and its password.** Never in any repository |
 
@@ -103,8 +104,9 @@ content forms. A privacy policy page is in `public/privacy.html`; it is publishe
 the site at `<pages url>/privacy.html`. **Read it before using it: it speaks for you,**
 and its contact link assumes the repository is `FriendlyUser/meridian`.
 
-Still to make for the listing: a 1024 × 500 feature graphic and at least two phone
-screenshots. `store/android/icon-512.png` is ready.
+Everything the listing needs is in `store/android/`: the text and the form answers in
+[`listing.md`](../store/android/listing.md), the icon, the feature graphic, eight phone
+screenshots and seven tablet ones.
 
 ## Tools
 
@@ -112,5 +114,6 @@ screenshots. `store/android/icon-512.png` is ready.
 |---|---|
 | `tools/android/release.sh [version]` | Build on GitHub, download, sign |
 | `tools/android/make-icons.sh` | Redraw the icon (`tools/android/art/icon.html`) at every size |
+| `tools/android/store-shots.sh [--preview] [name…]` | Retake the store screenshots and the feature graphic from the demo workspace (`index.html?demo`) |
 | `tools/npm.sh <args>` | npm from WSL when Node is only installed on Windows |
 | `npx cap sync android` | Copy a fresh `dist/` into the native project; run after adding a plugin |

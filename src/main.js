@@ -2,7 +2,7 @@
 // entirely on this device. This file starts everything and owns the keyboard.
 
 import { store } from './core/store.js';
-import { seed } from './core/seed.js';
+import { seed, demo } from './core/seed.js';
 import { timer, MODES, clockText } from './core/timer.js';
 import { fmtDuration } from './core/util.js';
 import { addNote } from './core/model.js';
@@ -58,11 +58,20 @@ function chime() {
 }
 
 function boot() {
-  const hadData = store.load();
-  const firstRun = !hadData && !store.data.seeded;
-  if (firstRun) {
-    seed();
-    store.commit('boot');
+  // index.html?demo shows a made-up, lived-in workspace without reading or saving
+  // anything real. tools/android/store-shots.sh takes the store pictures from it.
+  const params = new URLSearchParams(location.search);
+  const isDemo = params.has('demo');
+  let firstRun = false;
+  if (isDemo) {
+    store.startDemo();
+    demo(params);
+  } else {
+    firstRun = !store.load() && !store.data.seeded;
+    if (firstRun) {
+      seed();
+      store.commit('boot');
+    }
   }
   initTheme();
   installTooltips();
