@@ -21,7 +21,9 @@ and keeping the ideas that work with no backend:
 | **Progress** | Points and levels for finished tasks, habits and focus time, with daily charts | Habitica |
 
 Also: search and commands on `Ctrl K`, keyboard shortcuts (`?` lists them), light and
-dark themes, reminders, and a backup file you can save and restore from Settings.
+dark themes, reminders, and a backup file you can save and restore from Settings. In the
+Android app, Settings → *Phone calendar* copies events and open tasks into a calendar on the
+phone; choose a Google calendar and Android's own sync takes them to Google Calendar.
 
 Left out on purpose because they need a server or belong to another kind of app:
 sync, sharing, AI assistants, cloud storage, document scanning and office file editing.
@@ -31,7 +33,7 @@ sync, sharing, AI assistants, cloud storage, document scanning and office file e
 ```bash
 npm install
 npm run dev        # http://localhost:8770
-npm test           # headless tests for quick add, repeats, habits, levels
+npm test           # headless tests for quick add, repeats, habits, levels, calendar export
 npm run typecheck  # tsc over the plain JavaScript (JSDoc types, nothing emitted)
 npm run build      # bundle into dist/ for any static host
 ```
@@ -42,10 +44,10 @@ bundles them for release; that is the whole toolchain.
 ```
 index.html, css/style.css
 src/main.js            start-up and the keyboard
-src/core/              data and rules, no DOM: store, model, quickadd, timer, vault, seed
+src/core/              data and rules, no DOM: store, model, quickadd, timer, vault, seed, calexport
 src/ui/                shell and router, dialogs, shared parts, search, icons
 src/views/             one file per screen
-src/platform/          what differs inside the Android app: back button, sharing, reminders
+src/platform/          what differs inside the Android app: back button, sharing, reminders, calendar
 tests/                 node --test
 android/               the Capacitor project
 tools/android/         release and icon scripts

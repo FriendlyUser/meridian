@@ -31,6 +31,7 @@ PLAN THE DAY
 • Today shows your day as a timeline: events, timed tasks and the free time between them.
 • Overdue tasks and suggestions sit beside it, one tap from today's plan.
 • A week strip moves the whole view to any other day.
+• Copy your events and tasks into your phone's calendar, including Google Calendar.
 
 TASKS THE WAY YOU THINK
 • Type "Submit report every friday 4pm #work !1" and the date, time, repeat, list and priority are filled in for you.
@@ -58,12 +59,12 @@ SEE IT ADD UP
 
 YOURS, AND ONLY YOURS
 • Works fully offline. No account, no ads, no tracking, no purchases.
-• Nothing leaves your phone. Back up to a file whenever you like and restore it anywhere.
+• Nothing leaves your phone unless you choose: back up to a file and restore it anywhere, or copy your plans into your phone's calendar.
 • Reminders for timed tasks and events are scheduled on the device itself.
 • Light and dark themes.
 ```
 
-About 1,700 characters.
+About 1,800 characters.
 
 ## Graphics (all in `store/android/`)
 
@@ -99,7 +100,8 @@ These are declarations you make to Google, so read each answer before you submit
 | Ads | No, the app does not contain ads | |
 | Content rating | Fill in the questionnaire (IARC) as a utility/productivity app: no violence, sexual content, language, drugs or gambling; no user-to-user communication; does not share location | Expect Everyone / PEGI 3; the questionnaire decides |
 | Target audience | 13 and over | Choosing under-13 brings the Families policy into scope |
-| Data safety | No data collected, no data shared | Everything stays on the device; no analytics, ads or accounts |
+| Data safety | No data collected, no data shared | Everything stays on the device; no analytics, ads or accounts. Calendar export writes to a calendar on the phone and the app sends nothing itself; any syncing is Android's. **Re-read this answer before submitting the release that adds calendar export**: Google's definition of "collected" is data the app transmits off the device, and that is not the case here, but the decision is yours |
+| Sensitive permissions | Calendar (`READ_CALENDAR`, `WRITE_CALENDAR`) | Not a restricted permission, so no declaration form. Asked for only when the person uses Settings → Phone calendar, and described in the privacy policy |
 | Government apps, financial features, health | No | |
 | Advertising ID | The app does not use an advertising ID | No ad or analytics SDKs |
 

@@ -28,6 +28,7 @@ export function blank() {
       reminders: false,
       focus: { work: 25, short: 5, long: 15, every: 4, sound: true, auto: false },
       vault: null, // {salt, check}: set once a passcode locks a note
+      calendarExport: null, // Android: {id, name, account, at, count} of the phone calendar last exported to
     },
     profile: { xp: 0 },
     lists: [{ id: 'inbox', name: 'Inbox', color: 'blue' }],
