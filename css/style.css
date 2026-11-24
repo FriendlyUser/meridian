@@ -485,6 +485,13 @@ input:focus, select:focus, textarea:focus { outline: 2px solid var(--accent); ou
 .settings-row:last-child { border-bottom: 0; }
 .settings-row > div:first-child { flex: 1; min-width: 180px; }
 .settings-row small { display: block; color: var(--muted); }
+.cal-picks { display: grid; gap: 2px; }
+.cal-pick { display: flex; align-items: center; gap: 12px; width: 100%; min-height: 48px; padding: 8px 10px; border: 0; background: none; border-radius: 10px; text-align: left; color: var(--ink); }
+.cal-pick:hover, .cal-pick:focus-visible { background: color-mix(in srgb, var(--ink) 7%, transparent); outline: none; }
+.cal-pick.on { background: color-mix(in srgb, var(--accent) 12%, transparent); }
+.cal-pick span { flex: 1; min-width: 0; font-weight: 500; overflow-wrap: anywhere; }
+.cal-pick small { display: block; color: var(--muted); font-weight: 400; font-size: 13px; }
+.cal-pick .tick { color: var(--accent); }
 
 /* ---- Phones ---------------------------------------------------------------- */
 

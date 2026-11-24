@@ -16,7 +16,7 @@
 <body>
 <main>
   <h1>Meridian — Privacy Policy</h1>
-  <p class="date">Effective 19 November 2026. Applies to the Meridian app on the web and on Android (io.github.friendlyuser.meridian).</p>
+  <p class="date">Effective 24 November 2026. Applies to the Meridian app on the web and on Android (io.github.friendlyuser.meridian).</p>
 
   <h2>The short version</h2>
   <p>Meridian does not collect, store, share or sell any personal information. It has no accounts, no advertising, no analytics and no in-app purchases.</p>
@@ -29,9 +29,13 @@
 
   <h2>Permissions</h2>
   <p>The Android app asks to show notifications only if you turn on reminders. Reminders are scheduled on the device itself.</p>
+  <p>The Android app asks for access to your calendar only if you use Settings → Phone calendar. It uses that access for three things: to list the calendars on your phone so you can choose one, to add your Meridian events and open tasks to the calendar you chose, and to find the entries it added there earlier so it can update or remove them. Each entry it adds ends with a short "From Meridian" reference, which is how it recognises its own. It does not read, change or delete anything else in your calendars, and nothing it reads is stored or sent anywhere.</p>
+
+  <h2>Exporting to your calendar</h2>
+  <p>When you export, copies of your events and open tasks (their titles, notes, places, list names, days and times) are written into the calendar you chose on your phone. From then on they are part of that calendar. If it belongs to an account such as your Google account, Android's own sync sends them to that account's provider (for example Google Calendar), under that provider's privacy policy. Meridian itself does not send them; the developer never receives them. Settings → Phone calendar → Remove takes the copies back out.</p>
 
   <h2>Network use</h2>
-  <p>The Android app runs entirely offline. It asks for the Internet permission only because the system component that displays the app requires it; the app does not contact any server.</p>
+  <p>The Android app runs entirely offline. It asks for the Internet permission only because the system component that displays the app requires it; the app does not contact any server. Exporting to your calendar does not change this: the app writes to a calendar on the phone, and any syncing is done by Android.</p>
   <p>The web version is delivered by GitHub Pages. Like any web host, GitHub may log technical details such as your IP address when your browser fetches the page; see <a href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement">GitHub's privacy statement</a>. The app itself makes no other requests.</p>
 
   <h2>Children</h2>

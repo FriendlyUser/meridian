@@ -76,6 +76,19 @@ its first compile happens on GitHub and its first launch is yours. Check, in thi
    scheduled as inexact alarms, so a minute or two late is expected.
 6. Settings → *Back up* opens the share sheet with a `.json` file; *Restore* reads it back.
 7. Locking a note works (it needs a secure page; the app's own `https://localhost` is one).
+8. Settings → *Phone calendar* → *Choose calendar* asks for calendar access and lists the
+   phone's calendars, Google ones first. Pick your Google calendar: the toast says how many
+   items were added, and they appear in the Google Calendar app (and, after a sync, on
+   calendar.google.com). Check a timed event, an all-day event that spans several days, a
+   repeating event, and a task with and without a time. Then:
+   - *Export now* again with nothing changed says the calendar is up to date.
+   - Edit an event in Meridian, tick off a task, delete an event, and export: the calendar
+     follows (the ticked task disappears from it).
+   - An event you made yourself in that calendar is never touched.
+   - *Change* to another calendar moves Meridian's items there; *Remove* takes them out.
+   - Whether Google adds its default notifications to exported events (on top of Meridian's
+     own reminders). If it does and that is unwanted, the plugin can write `HAS_ALARM = 0`
+     explicitly or remove them after insert.
 
 If the layout sits under the status bar or the navigation bar, the place to look is
 `SystemBars` in `capacitor.config.json` together with `--safe-top` and `--safe-bottom`
@@ -88,10 +101,24 @@ at the top of `css/style.css`.
 - **Back up** (`src/platform/Native.js`) writes the file to the app's cache and opens
   the share sheet, because a WebView has no downloads.
 - **Back button**: closes what is open, then goes to Today, then minimises the app.
+- **Phone calendar** (`src/platform/CalendarExport.js`, `src/core/calexport.js`, and the
+  native `CalendarExportPlugin.java` beside `MainActivity.java`) copies events and open
+  tasks that have a day into a calendar the person chooses, through Android's Calendar
+  Provider. The app makes no network request for it: if the calendar belongs to a Google
+  account, Android's own sync takes the events to Google Calendar. It is one way, with
+  Meridian as the source. Each export adds, updates and removes entries so the calendar
+  matches. Meridian recognises its own entries by the line
+  `From Meridian (meridian:e:<id>)` at the end of each description, which survives
+  Google's sync, so a new phone restored from a backup still finds them. The native side
+  refuses to change or delete any entry without that line, so nothing the person made
+  can be touched. Repeating events are written with an RRULE. Repeating tasks export only
+  their current day, because Meridian adds the next one when a task is ticked off.
+  Colours are not exported: Google calendars accept only their own palette.
 - **Data** is in the app's own storage and is included in Android's device backup
   (`allowBackup`), which is what brings it back on a new phone.
 - **Permissions**: Internet (required by the WebView; the app contacts nothing),
-  notifications (asked only when reminders are turned on), start at boot and wake lock
+  notifications (asked only when reminders are turned on), calendar read and write (asked
+  only when Settings → *Phone calendar* is first used), start at boot and wake lock
   (so scheduled reminders survive a restart). The exact-alarm permission the
   notifications plugin declares is removed in `AndroidManifest.xml`.
 
