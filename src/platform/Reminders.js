@@ -21,14 +21,19 @@ function idOf(key) {
   return Math.abs(hash) % 2000000000 + 1;
 }
 
+/**
+ * The notifications plugin, inside an object. A Capacitor plugin answers to any
+ * property name, `then` included, so a promise must never resolve to the plugin
+ * itself: awaiting it would wait forever.
+ */
 async function plugin() {
   const { LocalNotifications } = await import('@capacitor/local-notifications');
-  return LocalNotifications;
+  return { notifications: LocalNotifications };
 }
 
 const syncNative = debounce(async () => {
   try {
-    const notifications = await plugin();
+    const { notifications } = await plugin();
     const pending = await notifications.getPending();
     if (pending.notifications.length) await notifications.cancel({ notifications: pending.notifications.map((n) => ({ id: n.id })) });
     if (!enabled()) return;
@@ -74,7 +79,7 @@ export async function setReminders(on) {
   if (on) {
     try {
       if (isNative()) {
-        const notifications = await plugin();
+        const { notifications } = await plugin();
         let status = await notifications.checkPermissions();
         if (status.display !== 'granted') status = await notifications.requestPermissions();
         if (status.display !== 'granted') { toast('Notifications are switched off for this app in the system settings.'); on = false; }

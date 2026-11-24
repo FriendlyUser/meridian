@@ -63,6 +63,15 @@ Tested, in desktop Chrome at desktop and phone sizes: every screen and dialog, q
 add, repeats, locked notes, the timer, search, settings, backup. The rules have
 headless tests (`npm test`).
 
+The app's side of reminders was also checked in headless Chromium posing as the app:
+`window.androidBridge` and `window.Capacitor` set before the page loads, with a
+`nativePromise` that records each call. Settings → Reminders → *Turn on* switches to
+*On* and the app calls `LocalNotifications.checkPermissions`, `getPending` and
+`schedule`. This check is how a hang was found: a Capacitor plugin answers to any
+property name, `then` included, so a promise that resolves to the plugin itself never
+settles (`src/platform/Reminders.js` wraps it in an object). It cannot say whether
+Android then shows the notification; that is still check 5 below.
+
 **Not tested: anything on a real phone.** There is no Android SDK, device or emulator
 on this machine, so the native project has been generated, customised and synced, but
 its first compile happens on GitHub and its first launch is yours. Check, in this order:
